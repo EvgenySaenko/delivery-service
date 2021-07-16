@@ -1,0 +1,202 @@
+<!doctype html>
+<!--создаем ангуларовское приложение-->
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <title>Delivery Service</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+
+    <!--    тема   -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/simplex/bootstrap.min.css">
+    <script src="index.js"></script>
+</head>
+
+<body>
+<div class="container" ng-controller="indexController">
+    <h1>Delivery Service</h1>
+    <div>
+        <!--        <button type="button" class="btn btn-primary">Primary</button>-->
+        <!--        <button type="button" class="btn btn-secondary">Secondary</button>-->
+        <!--        <button type="button" class="btn btn-success">Success</button>-->
+        <!--        <button type="button" class="btn btn-danger">Danger</button>-->
+        <!--        <button type="button" class="btn btn-warning">Warning</button>-->
+        <!--        <button type="button" class="btn btn-info">Info</button>-->
+        <!--        <button type="button" class="btn btn-light">Light</button>-->
+        <!--        <button type="button" class="btn btn-dark">Dark</button>-->
+        <!--        <button class="btn btn-primary" ng-click="createOrder()">Оформить заказ</button>-->
+        <!--        <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>-->
+
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">Ожидающие доставки заказы</span>
+            </div>
+        </nav>
+
+        <form novalidate ng-submit="editStatusOrder()">
+            <table class="table table-hover" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <td>Номер#</td>
+                    <td>Имя заказчика</td>
+                    <td>Откуда</td>
+                    <td>Куда</td>
+                    <td>На сумму</td>
+                    <td>Дата заказа</td>
+                    <td>Статус</td>
+                    <td>Действие</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="o in ProcessedOrders">
+                    <td>{{o.id}}</td>
+                    <td>{{o.firstName}}</td>
+                    <td>{{o.addressFrom}}</td>
+                    <td>{{o.addressTo}}</td>
+                    <td>{{o.totalPrice}}</td>
+                    <td>{{o.creationDateTime}}</td>
+                    <td>
+                        <button class="btn btn btn-warning">{{o.status}}</button>
+                    </td>
+                    <td>
+                        <button class="btn btn btn-success" type="submit" ng-click="getOrder(o)">Взять заказ</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">Активные заказы</span>
+            </div>
+        </nav>
+
+        <form novalidate ng-submit="editStatusOrder()">
+            <table class="table table-hover" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <td>Номер#</td>
+                    <td>Имя заказчика</td>
+                    <td>Откуда</td>
+                    <td>Куда</td>
+                    <td>На сумму</td>
+                    <td>Дата заказа</td>
+                    <td>Статус</td>
+                    <td>Действие</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="o in DeliveredOrders">
+                    <td>{{o.id}}</td>
+                    <td>{{o.firstName}}</td>
+                    <td>{{o.addressFrom}}</td>
+                    <td>{{o.addressTo}}</td>
+                    <td>{{o.totalPrice}}</td>
+                    <td>{{o.creationDateTime}}</td>
+                    <td>
+                        <button class="btn btn btn-warning">{{o.status}}</button>
+                    </td>
+                    <td>
+                        <button class="btn btn btn-success" type="submit" ng-click="getOrder(o)">Подтвердить доставку</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">Выполненные заказы</span>
+            </div>
+        </nav>
+
+        <table class="table table-hover" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <td>Номер#</td>
+                <td>Имя заказчика</td>
+                <td>Откуда</td>
+                <td>Куда</td>
+                <td>На сумму</td>
+                <td>Дата заказа</td>
+                <td>Статус</td>
+                <td>Действие</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="o in CompletedOrders">
+                <td>{{o.id}}</td>
+                <td>{{o.firstName}}</td>
+                <td>{{o.addressFrom}}</td>
+                <td>{{o.addressTo}}</td>
+                <td>{{o.totalPrice}}</td>
+                <td>{{o.creationDateTime}}</td>
+                <td>
+                    <button class="btn btn btn-warning">{{o.status}}</button>
+                </td>
+                <td>
+                    <button class="btn btn btn-success" type="submit" ng-click="getOrder(o)">Информация</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+
+
+<!--&lt;!&ndash; The Edit Order Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="editModal">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            &lt;!&ndash; Modal Header &ndash;&gt;-->
+<!--            <div class="modal-header">-->
+<!--                <h3 class="modal-title">Заказ номер: {{editableOrder.id}}</h3>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Modal body &ndash;&gt;-->
+<!--            <div class="modal-body">-->
+<!--                <form novalidate ng-submit="editStatusOrder()">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="firstName" class="form-control-label" >Заказчик:</label>-->
+<!--                        <input type="text" class="form-control" id="firstName" ng-model="editableOrder.firstName">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="addressFrom" class="form-control-label">Откуда:</label>-->
+<!--                        <input type="text" class="form-control" id="addressFrom" ng-model="editableOrder.addressFrom">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="addressTo" class="form-control-label">Куда:</label>-->
+<!--                        <input type="text" class="form-control" id="addressTo" ng-model="editableOrder.addressTo">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="totalPrice" class="form-control-label">На сумму:</label>-->
+<!--                        <input type="text" class="form-control" id="totalPrice" ng-model="editableOrder.totalPrice">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="creationDateTime" class="form-control-label">Дата формирования заказа:</label>-->
+<!--                        <input type="text" class="form-control" id="creationDateTime" ng-model="editableOrder.creationDateTime">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="status" class="form-control-label">Статус заказа:</label>-->
+<!--                        <input type="text" class="form-control" id="status" ng-model="editableOrder.status">-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <button type="button" class="btn btn-primary" data-dismiss="modal">Выйти</button>-->
+<!--                        <button id="btnSaveEdit" type="submit" class="btn btn-dark" >Выполнить заказ</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

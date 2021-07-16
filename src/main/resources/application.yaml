@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /delivery
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:delivery;MODE=PostgreSQL
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  thymeleaf:
+    cache: false
+
+delivery:
+  rabbitmq:
+    exchange: onlineshop.exchange
+    routingkey: onlineshop.order
+    queue: delivery.queue
